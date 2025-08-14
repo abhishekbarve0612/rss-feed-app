@@ -1,0 +1,65 @@
+.modeToggle {
+  display: flex;
+  background-color: var(--color-amber-100);
+  border-radius: var(--border-radius);
+  padding: 2px;
+  gap: 2px;
+}
+
+.modeButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  border: none;
+  border-radius: calc(var(--border-radius) - 2px);
+  background: transparent;
+  color: var(--color-amber-700);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modeButton svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.modeButton.active {
+  background-color: var(--color-white);
+  color: var(--color-amber-900);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
+}
+
+.modeButton:hover:not(.active) {
+  background-color: var(--color-amber-50);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modeToggle {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .modeButton {
+    padding: var(--spacing-1);
+  }
+
+  .modeButton span {
+    display: none;
+  }
+}
+
+/* Focus styles for accessibility */
+.modeButton:focus-visible {
+  outline: 2px solid var(--color-amber-600);
+  outline-offset: 2px;
+}
+
+/* Animation for smooth transitions */
+.modeButton {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}

@@ -1,0 +1,52 @@
+.card {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-amber-200);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.content {
+  padding: 24px;
+}
+
+.header {
+  padding: 24px 24px 0 24px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 300;
+  color: #44403c;
+  margin-bottom: 8px;
+}
+
+.emptyState {
+  padding: 48px;
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  opacity: 0.5;
+  color: #a8a29e;
+}
+
+.emptyTitle {
+  font-size: 18px;
+  font-weight: 300;
+  color: #a8a29e;
+  margin-bottom: 8px;
+}
+
+.emptyDescription {
+  font-size: 14px;
+  color: #a8a29e;
+}
