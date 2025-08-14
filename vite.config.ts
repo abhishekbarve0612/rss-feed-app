@@ -3,11 +3,11 @@ import react from '@vitejs/plugin-react-swc'
 import { fileURLToPath } from 'url'
 import { dirname, resolve } from 'path'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
+import tailwindcss from '@tailwindcss/vite'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     tanstackRouter({
@@ -15,6 +15,7 @@ export default defineConfig({
       autoCodeSplitting: true,
     }),
     react(),
+    tailwindcss(),
   ],
   resolve: {
     alias: {
