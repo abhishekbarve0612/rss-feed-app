@@ -53,7 +53,7 @@ function RootComponent() {
                     </Button>
                   </Navbar.Item>
                   <Navbar.Item>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" id="settings-button">
                       <FaCog />
                       Settings
                     </Button>
