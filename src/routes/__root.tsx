@@ -9,6 +9,8 @@ import { FaCog } from 'react-icons/fa'
 import { ScrollArea } from '@abhishekbarve/components'
 import { IoMenu } from 'react-icons/io5'
 import { useState } from 'react'
+import { Toaster } from '@/lib/toast'
+import AddFeedModal from '@/components/AddFeedModal'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -41,19 +43,19 @@ function RootComponent() {
 
                 <Navbar.Group align="right">
                   <Navbar.Item>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" asChild>
                       <HiRefresh />
                       Refresh
                     </Button>
                   </Navbar.Item>
                   <Navbar.Item>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" id="add-feed-button" asChild>
                       <FaPlus />
                       Add Feed
                     </Button>
                   </Navbar.Item>
                   <Navbar.Item>
-                    <Button variant="ghost" size="sm" id="settings-button">
+                    <Button variant="ghost" size="sm" id="settings-button" asChild>
                       <FaCog />
                       Settings
                     </Button>
@@ -61,7 +63,7 @@ function RootComponent() {
                 </Navbar.Group>
                 <Navbar.Group>
                   <Navbar.Item>
-                    <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(true)}>
+                    <Button variant="ghost" size="lg" onClick={() => setSidebarOpen(true)} asChild>
                       <IoMenu />
                     </Button>
                   </Navbar.Item>
@@ -73,6 +75,10 @@ function RootComponent() {
             </Main>
           </div>
         </div>
+
+        <AddFeedModal />
+
+        <Toaster position="bottom-right" richColors />
         <TanStackRouterDevtools />
       </ThemeProvider>
     </React.Fragment>
