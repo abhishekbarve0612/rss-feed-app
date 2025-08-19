@@ -20,6 +20,7 @@ class FeedEntry(Base):
     id = Column(Integer, primary_key=True, index=True)
     feed_id = Column(Integer, ForeignKey("feeds.id"))
     title = Column(String, nullable=False)
+    slug = Column(String, unique=True, index=True, nullable=True)
     link = Column(String, unique=True, nullable=False)
     published_date = Column(DateTime, default=datetime.utcnow)
     summary = Column(Text, nullable=True)

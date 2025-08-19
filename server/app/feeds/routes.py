@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -9,7 +9,7 @@ from app.jobs.scheduler import fetch_all_feeds
 router = APIRouter()
 
 @router.post("/", response_model=schemas.FeedOut)
-async def add_feed(feed: schemas.FeedCreate, db: Session = Depends(get_db)):
+async def add_feed(feed: schemas.FeedCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     db_feed = db.query(models.FeedURL).filter_by(url=feed.url).first()
     if db_feed:
         raise HTTPException(status_code=400, detail="Feed already exists")
@@ -17,6 +17,7 @@ async def add_feed(feed: schemas.FeedCreate, db: Session = Depends(get_db)):
     new_feed = models.FeedURL(url=feed.url)
     db.add(new_feed)
     db.commit()
+    background_tasks.add_task(services.fetch_feed_by_id, new_feed.id)
     db.refresh(new_feed)
     return new_feed
 

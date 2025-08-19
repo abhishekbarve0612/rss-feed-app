@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 from app.feeds import models
 from app.feeds.utils import slug_from_url, slugify
+from app.db import get_db
 
 def fetch_feed(db: Session, feed: models.FeedURL):
     """Fetch and update a feed, store new entries."""
@@ -23,6 +24,7 @@ def fetch_feed(db: Session, feed: models.FeedURL):
                 feed_id=feed.id,
                 title=entry.get("title", "No title"),
                 link=entry.link,
+                slug=slugify(entry.title, slug_from_url(entry.link)),
                 published_date=(
                     datetime(*entry.published_parsed[:6])
                     if hasattr(entry, "published_parsed")
@@ -35,3 +37,10 @@ def fetch_feed(db: Session, feed: models.FeedURL):
     db.commit()
     db.refresh(feed)
     return feed
+
+def fetch_feed_by_id(feed_id: int):
+    """Fetch and update a feed by ID in a background task."""
+    db = next(get_db())
+    feed = db.query(models.FeedURL).filter_by(id=feed_id).first()
+    if feed:
+        fetch_feed(db, feed)

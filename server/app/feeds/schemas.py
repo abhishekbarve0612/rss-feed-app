@@ -9,7 +9,7 @@ class FeedOut(BaseModel):
     id: int
     url: str
     title: Optional[str]
-    slug: str
+    slug: Optional[str]
     last_fetched: Optional[datetime]
 
     class Config:
@@ -19,6 +19,7 @@ class FeedEntryOut(BaseModel):
     id: int
     title: str
     link: str
+    slug: Optional[str]
     published_date: datetime
     summary: Optional[str]
 
