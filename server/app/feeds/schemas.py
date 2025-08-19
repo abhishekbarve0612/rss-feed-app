@@ -11,7 +11,8 @@ class FeedOut(BaseModel):
     title: Optional[str]
     slug: Optional[str]
     last_fetched: Optional[datetime]
-
+    created_at: datetime
+    updated_at: datetime
     class Config:
         orm_mode = True
 
@@ -22,6 +23,7 @@ class FeedEntryOut(BaseModel):
     slug: Optional[str]
     published_date: datetime
     summary: Optional[str]
-
+    created_at: datetime
+    updated_at: datetime
     class Config:
         orm_mode = True

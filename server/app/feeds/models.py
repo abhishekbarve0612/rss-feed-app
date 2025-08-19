@@ -13,6 +13,10 @@ class FeedURL(Base):
     last_fetched = Column(DateTime, default=None)
 
     entries = relationship("FeedEntry", back_populates="feed")
+    
+
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
 class FeedEntry(Base):
     __tablename__ = "feed_entries"
@@ -22,7 +26,10 @@ class FeedEntry(Base):
     title = Column(String, nullable=False)
     slug = Column(String, unique=True, index=True, nullable=True)
     link = Column(String, unique=True, nullable=False)
-    published_date = Column(DateTime, default=datetime.utcnow)
+    published_date = Column(DateTime, default=datetime.now)
     summary = Column(Text, nullable=True)
 
     feed = relationship("FeedURL", back_populates="entries")
+    
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
