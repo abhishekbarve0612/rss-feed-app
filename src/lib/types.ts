@@ -42,3 +42,22 @@ export interface ReadingSettings {
   maxWidth: number
   theme: 'light' | 'dark' | 'sepia'
 }
+
+export interface FeedOut {
+  id: number
+  url: string
+  slug: string
+  title?: string
+  description?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface FeedEntryOut {
+  id: number
+  title: string
+  description?: string
+  link: string
+  published_at: string
+  feed_id: number
+}
