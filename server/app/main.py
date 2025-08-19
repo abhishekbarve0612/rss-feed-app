@@ -1,11 +1,12 @@
 from fastapi import FastAPI
+from app.db import Base, engine
+from app.feeds.routes import router as feeds_router
 
-app = FastAPI()
+app = FastAPI(title="RSS Reader Backend")
 
-@app.get('/feeds')
-async def root():
-    return {"message": "Feeds will go here"}
+Base.metadata.create_all(bind=engine)
+app.include_router(feeds_router, prefix="/feeds", tags=["feeds"])
 
-@app.get('/feeds/{feed_id}')
-async def get_feed(feed_id: int):
-    return {"message": f"Feed {feed_id} will go here"}
+@app.get("/")
+def root():
+    return {"msg": "RSS Reader API running"}
