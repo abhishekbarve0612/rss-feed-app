@@ -56,8 +56,10 @@ export interface FeedOut {
 export interface FeedEntryOut {
   id: number
   title: string
-  description?: string
+  summary?: string
   link: string
-  published_at: string
-  feed_id: number
+  slug: string
+  published_date: string
+  created_at: string
+  updated_at: string
 }

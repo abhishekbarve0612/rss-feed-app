@@ -3,6 +3,7 @@ import { Badge, Button } from '@abhishekbarve/components'
 import { Card } from '@abhishekbarve/components'
 import { FaCalendar, FaExternalLinkAlt, FaRss } from 'react-icons/fa'
 import { FeedOut } from '@/lib/types'
+import { Link } from '@tanstack/react-router'
 
 interface FeedCardProps {
   feed: FeedOut
@@ -11,7 +12,12 @@ interface FeedCardProps {
 
 function FeedCard({ feed, minimal = false }: FeedCardProps) {
   return (
-    <Card key={feed.id} className="cursor-pointer transition-shadow hover:shadow-md">
+    <Card
+      key={feed.id}
+      className="cursor-pointer transition-shadow hover:shadow-md"
+      href={`/feed/${feed.slug}`}
+      LinkComponent={Link}
+    >
       <Card.Content className="p-6">
         <div className="space-y-3">
           <div className="flex items-start justify-between gap-4">

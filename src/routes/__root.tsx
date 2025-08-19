@@ -10,7 +10,6 @@ import {
   ThemeProvider,
   ModalProvider,
 } from '@abhishekbarve/components'
-import { HiRefresh } from 'react-icons/hi'
 import { FaPlus } from 'react-icons/fa6'
 import { FaCog } from 'react-icons/fa'
 import { IoMenu } from 'react-icons/io5'
@@ -19,6 +18,7 @@ import AddFeedModal from '@/components/AddFeedModal'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import FeedsBar from '@/components/FeedsBar'
 import { useStore } from '@/stores/store'
+import RefreshFeedButton from '@/components/RefreshFeedButton'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -43,10 +43,7 @@ function RootComponent() {
 
                     <Navbar.Group align="right">
                       <Navbar.Item>
-                        <Button variant="ghost" size="sm" asChild>
-                          <HiRefresh />
-                          Refresh
-                        </Button>
+                        <RefreshFeedButton />
                       </Navbar.Item>
                       <Navbar.Item>
                         <Button variant="ghost" size="sm" id="add-feed-button" asChild>

@@ -10,7 +10,7 @@ export const useAddFeed = () => {
 }
 
 export const useFeedEntries = (slug: string) => {
-  return useGet<FeedEntryOut[]>(`/api/feeds/${slug}/entries`)
+  return useGet<FeedEntryOut[]>(`/api/feeds/${slug}/articles`)
 }
 
 export const useRefreshFeed = (slug: string) => {

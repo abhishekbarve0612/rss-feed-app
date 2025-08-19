@@ -14,6 +14,7 @@ function RouteComponent() {
 
   useEffect(() => {
     if (feeds) {
+      console.log('Feeds received from API:', feeds)
       setFeeds(feeds)
     }
   }, [feeds, setFeeds])
