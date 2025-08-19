@@ -2,10 +2,10 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
-class FeedCreate(BaseModel):
+class SourceCreate(BaseModel):
     url: str
 
-class FeedOut(BaseModel):
+class SourceOut(BaseModel):
     id: int
     url: str
     title: Optional[str]
@@ -16,7 +16,7 @@ class FeedOut(BaseModel):
     class Config:
         orm_mode = True
 
-class FeedEntryOut(BaseModel):
+class ArticleOut(BaseModel):
     id: int
     title: str
     link: str

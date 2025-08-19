@@ -3,8 +3,8 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.db import Base
 
-class FeedURL(Base):
-    __tablename__ = "feeds"
+class Source(Base):
+    __tablename__ = "sources"
 
     id = Column(Integer, primary_key=True, index=True)
     url = Column(String, unique=True, nullable=False)
@@ -12,24 +12,24 @@ class FeedURL(Base):
     slug = Column(String, unique=True, index=True, nullable=True)
     last_fetched = Column(DateTime, default=None)
 
-    entries = relationship("FeedEntry", back_populates="feed")
+    articles = relationship("Article", back_populates="source")
     
 
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
-class FeedEntry(Base):
-    __tablename__ = "feed_entries"
+class Article(Base):
+    __tablename__ = "articles"
 
     id = Column(Integer, primary_key=True, index=True)
-    feed_id = Column(Integer, ForeignKey("feeds.id"))
+    source_id = Column(Integer, ForeignKey("sources.id"))
     title = Column(String, nullable=False)
     slug = Column(String, unique=True, index=True, nullable=True)
     link = Column(String, unique=True, nullable=False)
     published_date = Column(DateTime, default=datetime.now)
     summary = Column(Text, nullable=True)
 
-    feed = relationship("FeedURL", back_populates="entries")
+    source = relationship("Source", back_populates="articles")
     
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)

@@ -8,39 +8,39 @@ from app.jobs.scheduler import fetch_all_feeds
 
 router = APIRouter()
 
-@router.post("/", response_model=schemas.FeedOut)
-async def add_feed(feed: schemas.FeedCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
-    db_feed = db.query(models.FeedURL).filter_by(url=feed.url).first()
-    if db_feed:
-        raise HTTPException(status_code=400, detail="Feed already exists")
+@router.post("/", response_model=schemas.SourceOut)
+async def add_source(source: schemas.SourceCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    db_source = db.query(models.Source).filter_by(url=source.url).first()
+    if db_source:
+        raise HTTPException(status_code=400, detail="Source already exists")
 
-    new_feed = models.FeedURL(url=feed.url)
-    db.add(new_feed)
+    new_source = models.Source(url=source.url)
+    db.add(new_source)
     db.commit()
-    background_tasks.add_task(services.fetch_feed_by_id, new_feed.id)
-    db.refresh(new_feed)
-    return new_feed
+    background_tasks.add_task(services.fetch_source_by_id, new_source.id)
+    db.refresh(new_source)
+    return new_source
 
-@router.get("/", response_model=List[schemas.FeedOut])
-async def list_feeds(db: Session = Depends(get_db)):
-    return db.query(models.FeedURL).all()
+@router.get("/", response_model=List[schemas.SourceOut])
+async def list_sources(db: Session = Depends(get_db)):
+    return db.query(models.Source).all()
 
-@router.get("/{slug}/entries", response_model=List[schemas.FeedEntryOut])
-async def get_feed_entries(slug: str, db: Session = Depends(get_db)):
-    feed = db.query(models.FeedURL).filter_by(slug=slug).first()
-    if not feed:
-        raise HTTPException(status_code=404, detail="Feed not found")
-    return feed.entries
+@router.get("/{slug}/articles", response_model=List[schemas.ArticleOut])
+async def get_source_articles(slug: str, db: Session = Depends(get_db)):
+    source = db.query(models.Source).filter_by(slug=slug).first()
+    if not source:
+        raise HTTPException(status_code=404, detail="Source not found")
+    return source.articles
 
-@router.post("/{slug}/refresh", response_model=schemas.FeedOut)
-async def refresh_feed(slug: str, db: Session = Depends(get_db)):
-    feed = db.query(models.FeedURL).filter_by(slug=slug).first()
-    if not feed:
-        raise HTTPException(status_code=404, detail="Feed not found")
-    return services.fetch_feed(db, feed)
+@router.post("/{slug}/refresh", response_model=schemas.SourceOut)
+async def refresh_source(slug: str, db: Session = Depends(get_db)):
+    source = db.query(models.Source).filter_by(slug=slug).first()
+    if not source:
+        raise HTTPException(status_code=404, detail="Source not found")
+    return services.fetch_source(db, source)
 
 
 @router.post("/refresh-all")
-def refresh_all_feeds(db: Session = Depends(get_db)):
+def refresh_all_sources(db: Session = Depends(get_db)):
     fetch_all_feeds()
-    return {"status": "Triggered feed refresh"}
+    return {"status": "Triggered source refresh"}
