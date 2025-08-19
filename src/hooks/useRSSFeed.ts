@@ -2,11 +2,11 @@ import type { FeedOut, FeedEntryOut } from '@/lib/types'
 import { useGet, usePost } from './useQuery'
 
 export const useFeeds = () => {
-  return useGet<FeedOut[]>('/api/feeds')
+  return useGet<FeedOut[]>('/api/feeds/')
 }
 
 export const useAddFeed = () => {
-  return usePost<FeedOut>('/api/feeds')
+  return usePost<FeedOut>('/api/feeds/')
 }
 
 export const useFeedEntries = (slug: string) => {
