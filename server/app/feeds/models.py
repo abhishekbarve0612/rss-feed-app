@@ -9,6 +9,7 @@ class FeedURL(Base):
     id = Column(Integer, primary_key=True, index=True)
     url = Column(String, unique=True, nullable=False)
     title = Column(String, nullable=True)
+    slug = Column(String, unique=True, index=True, nullable=True)
     last_fetched = Column(DateTime, default=None)
 
     entries = relationship("FeedEntry", back_populates="feed")
