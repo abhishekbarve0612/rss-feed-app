@@ -30,6 +30,20 @@ class Article(Base):
     summary = Column(Text, nullable=True)
 
     source = relationship("Source", back_populates="articles")
+    content = relationship("ArticleContent", back_populates="article", uselist=False)
+    
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+
+class ArticleContent(Base):
+    __tablename__ = "article_content"
+
+    id = Column(Integer, primary_key=True, index=True)
+    article_id = Column(Integer, ForeignKey("articles.id"), unique=True)
+    content = Column(Text, nullable=True)
+    content_type = Column(String, default="html")
+
+    article = relationship("Article", back_populates="content")
     
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)

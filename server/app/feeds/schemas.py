@@ -16,6 +16,19 @@ class SourceOut(BaseModel):
     class Config:
         orm_mode = True
 
+class ArticleContentCreate(BaseModel):
+    content: Optional[str]
+    content_type: str = "html"
+
+class ArticleContentOut(BaseModel):
+    id: int
+    content: Optional[str]
+    content_type: str
+    created_at: datetime
+    updated_at: datetime
+    class Config:
+        orm_mode = True
+
 class ArticleOut(BaseModel):
     id: int
     title: str
@@ -23,6 +36,7 @@ class ArticleOut(BaseModel):
     slug: Optional[str]
     published_date: datetime
     summary: Optional[str]
+    content: Optional[ArticleContentOut]
     created_at: datetime
     updated_at: datetime
     class Config:
