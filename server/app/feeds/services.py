@@ -1,4 +1,6 @@
 import feedparser
+import trafilatura
+import requests
 from datetime import datetime
 from sqlalchemy.orm import Session
 from app.feeds import models
@@ -44,3 +46,56 @@ def fetch_source_by_id(source_id: int):
     source = db.query(models.Source).filter_by(id=source_id).first()
     if source:
         fetch_source(db, source)
+
+def fetch_article_content(db: Session, article: models.Article):
+    """Fetch full content for an article using trafilatura."""
+    try:
+        # Download the webpage
+        response = requests.get(article.link, timeout=30)
+        response.raise_for_status()
+        
+        plain_text = trafilatura.extract(response.text)
+        html_text = trafilatura.extract(response.text, output_format='html')
+        
+        content = db.query(models.ArticleContent).filter_by(article_id=article.id).first()
+        
+        if content:
+            content.plain_text = plain_text
+            content.html_text = html_text
+            content.is_fetched = 1
+            content.updated_at = datetime.now()
+        else:
+            content = models.ArticleContent(
+                article_id=article.id,
+                plain_text=plain_text,
+                html_text=html_text,
+                is_fetched=1
+            )
+            db.add(content)
+        
+        db.commit()
+        return content
+        
+    except Exception as e:
+        content = db.query(models.ArticleContent).filter_by(article_id=article.id).first()
+        if content:
+            content.is_fetched = -1
+            content.updated_at = datetime.now()
+        else:
+            content = models.ArticleContent(
+                article_id=article.id,
+                is_fetched=-1
+            )
+            db.add(content)
+        
+        db.commit()
+        print(f"Error fetching content for article {article.id}: {str(e)}")
+        return None
+
+def fetch_article_content_by_id(article_id: int):
+    """Fetch article content by ID in a background task."""
+    db = next(get_db())
+    article = db.query(models.Article).filter_by(id=article_id).first()
+    if article:
+        return fetch_article_content(db, article)
+    return None

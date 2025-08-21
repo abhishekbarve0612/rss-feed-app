@@ -13,6 +13,8 @@ sqlalchemy = "^2.0.43"
 pydantic = "^2.11.7"
 apscheduler = "^3.11.0"
 alembic = "^1.16.4"
+trafilatura = "^2.0.0"
+requests = "^2.32.5"
 
 
 [build-system]

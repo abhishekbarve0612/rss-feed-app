@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.db import Base
@@ -40,8 +40,9 @@ class ArticleContent(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     article_id = Column(Integer, ForeignKey("articles.id"), unique=True)
-    content = Column(Text, nullable=True)
-    content_type = Column(String, default="html")
+    plain_text = Column(Text, nullable=True)
+    html_text = Column(Text, nullable=True)
+    is_fetched = Column(Integer, default=0)  # 0: not fetched, 1: fetched successfully, -1: failed
 
     article = relationship("Article", back_populates="content")
     

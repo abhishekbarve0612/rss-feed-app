@@ -17,13 +17,14 @@ class SourceOut(BaseModel):
         orm_mode = True
 
 class ArticleContentCreate(BaseModel):
-    content: Optional[str]
-    content_type: str = "html"
+    plain_text: Optional[str]
+    html_text: Optional[str]
 
 class ArticleContentOut(BaseModel):
     id: int
-    content: Optional[str]
-    content_type: str
+    plain_text: Optional[str]
+    html_text: Optional[str]
+    is_fetched: int
     created_at: datetime
     updated_at: datetime
     class Config:
