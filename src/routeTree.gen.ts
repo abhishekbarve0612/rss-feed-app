@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FeedSlugIndexRouteImport } from './routes/feed/$slug/index'
-import { Route as FeedSlugArticleArticleSlugPageRouteImport } from './routes/feed/$slug/article/$article-slug/page'
+import { Route as FeedSlugArticleArticleSlugIndexRouteImport } from './routes/feed/$slug/article/$article-slug/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,45 +23,41 @@ const FeedSlugIndexRoute = FeedSlugIndexRouteImport.update({
   path: '/feed/$slug/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FeedSlugArticleArticleSlugPageRoute =
-  FeedSlugArticleArticleSlugPageRouteImport.update({
-    id: '/feed/$slug/article/$article-slug/page',
-    path: '/feed/$slug/article/$article-slug/page',
+const FeedSlugArticleArticleSlugIndexRoute =
+  FeedSlugArticleArticleSlugIndexRouteImport.update({
+    id: '/feed/$slug/article/$article-slug/',
+    path: '/feed/$slug/article/$article-slug/',
     getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/feed/$slug': typeof FeedSlugIndexRoute
-  '/feed/$slug/article/$article-slug/page': typeof FeedSlugArticleArticleSlugPageRoute
+  '/feed/$slug/article/$article-slug': typeof FeedSlugArticleArticleSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/feed/$slug': typeof FeedSlugIndexRoute
-  '/feed/$slug/article/$article-slug/page': typeof FeedSlugArticleArticleSlugPageRoute
+  '/feed/$slug/article/$article-slug': typeof FeedSlugArticleArticleSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/feed/$slug/': typeof FeedSlugIndexRoute
-  '/feed/$slug/article/$article-slug/page': typeof FeedSlugArticleArticleSlugPageRoute
+  '/feed/$slug/article/$article-slug/': typeof FeedSlugArticleArticleSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/feed/$slug' | '/feed/$slug/article/$article-slug/page'
+  fullPaths: '/' | '/feed/$slug' | '/feed/$slug/article/$article-slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/feed/$slug' | '/feed/$slug/article/$article-slug/page'
-  id:
-    | '__root__'
-    | '/'
-    | '/feed/$slug/'
-    | '/feed/$slug/article/$article-slug/page'
+  to: '/' | '/feed/$slug' | '/feed/$slug/article/$article-slug'
+  id: '__root__' | '/' | '/feed/$slug/' | '/feed/$slug/article/$article-slug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FeedSlugIndexRoute: typeof FeedSlugIndexRoute
-  FeedSlugArticleArticleSlugPageRoute: typeof FeedSlugArticleArticleSlugPageRoute
+  FeedSlugArticleArticleSlugIndexRoute: typeof FeedSlugArticleArticleSlugIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -80,11 +76,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FeedSlugIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/feed/$slug/article/$article-slug/page': {
-      id: '/feed/$slug/article/$article-slug/page'
-      path: '/feed/$slug/article/$article-slug/page'
-      fullPath: '/feed/$slug/article/$article-slug/page'
-      preLoaderRoute: typeof FeedSlugArticleArticleSlugPageRouteImport
+    '/feed/$slug/article/$article-slug/': {
+      id: '/feed/$slug/article/$article-slug/'
+      path: '/feed/$slug/article/$article-slug'
+      fullPath: '/feed/$slug/article/$article-slug'
+      preLoaderRoute: typeof FeedSlugArticleArticleSlugIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -93,7 +89,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FeedSlugIndexRoute: FeedSlugIndexRoute,
-  FeedSlugArticleArticleSlugPageRoute: FeedSlugArticleArticleSlugPageRoute,
+  FeedSlugArticleArticleSlugIndexRoute: FeedSlugArticleArticleSlugIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

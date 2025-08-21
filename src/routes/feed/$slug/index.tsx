@@ -24,7 +24,7 @@ function RouteComponent() {
 function FeedEntries() {
   const { slug } = Route.useLoaderData()
   const { data: entries, isLoading, error } = useFeedEntries(slug)
-  const { setFeedEntries, setLoading, setError, setSelectedFeedSlug } = useFeedStore()
+  const { setArticlesByFeedSlug, setLoading, setError, setSelectedFeedSlug } = useFeedStore()
 
   useEffect(() => {
     setSelectedFeedSlug(slug)
@@ -32,9 +32,9 @@ function FeedEntries() {
 
   useEffect(() => {
     if (entries) {
-      setFeedEntries(entries)
+      setArticlesByFeedSlug(slug, entries)
     }
-  }, [entries, setFeedEntries])
+  }, [entries, slug, setArticlesByFeedSlug])
 
   useEffect(() => {
     setLoading(isLoading)
@@ -48,7 +48,7 @@ function FeedEntries() {
     <>
       <h1>Feed Entries</h1>
       <div className="flex flex-1">
-        <ArticlesList />
+        <ArticlesList feedSlug={slug} />
       </div>
     </>
   )

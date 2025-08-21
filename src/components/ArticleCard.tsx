@@ -1,15 +1,21 @@
 import { Button, Card } from '@abhishekbarve/components'
-import type { FeedEntryOut } from '@/lib/types'
+import type { ArticleMeta } from '@/lib/types'
 import { FaExternalLinkAlt } from 'react-icons/fa'
+import { Link } from '@tanstack/react-router'
 
 interface ArticleCardProps {
-  article: FeedEntryOut
+  article: ArticleMeta
   minimal?: boolean
+  feedSlug: string
 }
 
-function ArticleCard({ article, minimal = false }: ArticleCardProps) {
+function ArticleCard({ article, minimal = false, feedSlug }: ArticleCardProps) {
   return (
-    <Card className={minimal ? 'p-3' : 'p-4'}>
+    <Card
+      className={minimal ? 'p-3' : 'p-4'}
+      href={`/feed/${feedSlug}/article/${article.slug}`}
+      LinkComponent={Link}
+    >
       <Card.Header className="pb-2">
         <Card.Title className={minimal ? 'text-sm' : 'text-base'}>
           <div className="flex items-start justify-between gap-4">

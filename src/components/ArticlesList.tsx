@@ -4,14 +4,17 @@ import ArticleCard from './ArticleCard'
 
 interface ArticlesListProps {
   minimal?: boolean
+  feedSlug: string
 }
 
-export function ArticlesList({ minimal = false }: ArticlesListProps) {
-  const { getAllEntries, isLoading, error } = useFeedStore()
-  const entries = getAllEntries()
-  
+export function ArticlesList({ minimal = false, feedSlug }: ArticlesListProps) {
+  const { getSelectedFeed, getAllArticles, getAllArticlesByFeedSlug, isLoading, error } =
+    useFeedStore()
+  const selectedFeed = getSelectedFeed()
+  const entries = selectedFeed ? getAllArticlesByFeedSlug(selectedFeed.slug) : getAllArticles()
+
   console.log('articles', entries)
-  
+
   if (isLoading && entries.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center">
@@ -39,7 +42,9 @@ export function ArticlesList({ minimal = false }: ArticlesListProps) {
       <div className="flex flex-1 items-center justify-center">
         <div className="text-center">
           <p className="text-muted-foreground">No articles available</p>
-          <p className="text-muted-foreground text-sm">Articles will appear here when feeds are loaded</p>
+          <p className="text-muted-foreground text-sm">
+            Articles will appear here when feeds are loaded
+          </p>
         </div>
       </div>
     )
@@ -49,7 +54,7 @@ export function ArticlesList({ minimal = false }: ArticlesListProps) {
     <ScrollArea className="flex-1">
       <div className="space-y-4 p-6">
         {entries.map((entry) => (
-          <ArticleCard key={entry.id} article={entry} minimal={minimal} />
+          <ArticleCard key={entry.id} article={entry} minimal={minimal} feedSlug={feedSlug} />
         ))}
       </div>
     </ScrollArea>

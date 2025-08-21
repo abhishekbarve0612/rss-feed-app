@@ -1,4 +1,4 @@
-import type { FeedOut, FeedEntryOut } from '@/lib/types'
+import type { FeedOut, ArticleMeta, ArticleContentOut } from '@/lib/types'
 import { useGet, usePost } from './useQuery'
 
 export const useFeeds = () => {
@@ -10,7 +10,7 @@ export const useAddFeed = () => {
 }
 
 export const useFeedEntries = (slug: string) => {
-  return useGet<FeedEntryOut[]>(`/api/feeds/${slug}/articles`)
+  return useGet<ArticleMeta[]>(`/api/feeds/${slug}/articles`)
 }
 
 export const useRefreshFeed = (slug: string) => {
@@ -19,4 +19,8 @@ export const useRefreshFeed = (slug: string) => {
 
 export const useRefreshAllFeeds = () => {
   return usePost<{ status: string }>('/api/feeds/refresh-all')
+}
+
+export const useArticleContent = (sourceSlug: string, articleSlug: string) => {
+  return useGet<ArticleContentOut>(`/api/feeds/${sourceSlug}/articles/${articleSlug}`)
 }

@@ -45,37 +45,16 @@ def refresh_all_sources(db: Session = Depends(get_db)):
     fetch_all_feeds()
     return {"status": "Triggered source refresh"}
 
-@router.get("/articles/{article_id}/content", response_model=schemas.ArticleContentOut)
-async def get_article_content(article_id: int, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
-    article = db.query(models.Article).filter_by(id=article_id).first()
-    if not article:
-        raise HTTPException(status_code=404, detail="Article not found")
-    
-    content = db.query(models.ArticleContent).filter_by(article_id=article_id).first()
-    
-    if not content or content.is_fetched == 0:
-        # Content not fetched yet, trigger background fetch
-        background_tasks.add_task(services.fetch_article_content_by_id, article_id)
-        
-        if not content:
-            # Create a placeholder content record
-            content = models.ArticleContent(
-                article_id=article_id,
-                is_fetched=0
-            )
-            db.add(content)
-            db.commit()
-            db.refresh(content)
-    
-    elif content.is_fetched == -1:
-        # Previous fetch failed, retry in background
-        background_tasks.add_task(services.fetch_article_content_by_id, article_id)
-    
-    return content
 
-@router.get("/articles/slug/{slug}/content")
-async def get_article_content_by_slug(slug: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
-    article = db.query(models.Article).filter_by(slug=slug).first()
+@router.get("/{source_slug}/articles/{article_slug}")
+async def get_article_content_by_slug(source_slug: str, article_slug: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    # First verify the source exists
+    source = db.query(models.Source).filter_by(slug=source_slug).first()
+    if not source:
+        raise HTTPException(status_code=404, detail="Source not found")
+    
+    # Find the article within this source
+    article = db.query(models.Article).filter_by(slug=article_slug, source_id=source.id).first()
     if not article:
         raise HTTPException(status_code=404, detail="Article not found")
     

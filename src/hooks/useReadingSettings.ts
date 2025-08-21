@@ -9,6 +9,7 @@ const DEFAULT_SETTINGS: ReadingSettings = {
   fontSize: 16,
   fontFamily: 'system',
   lineHeight: 1.6,
+  letterSpacing: 'normal',
   maxWidth: 800,
   theme: 'light',
 }
