@@ -1,22 +1,19 @@
 import { useState } from 'react'
-import { Button, ScrollArea, Badge } from '@abhishekbarve/components'
-import { FaExternalLinkAlt, FaCalendar, FaUser, FaStickyNote } from 'react-icons/fa'
+import { Button, ScrollArea } from '@abhishekbarve/components'
+import { FaExternalLinkAlt, FaCalendar, FaStickyNote } from 'react-icons/fa'
 import useReadingSettings from '@/hooks/useReadingSettings'
-import type { ArticleMeta } from '@/lib/types'
+import type { ArticleWithContent } from '@/lib/types'
 import { FaArrowLeft } from 'react-icons/fa6'
-import { useFeedStore } from '@/stores/feedStore'
 import RenderHTML from './RenderHTML'
 
 interface ArticleViewProps {
-  article: ArticleMeta
+  article: ArticleWithContent
   isLoading: boolean
   error: string | null
   onBack: () => void
 }
 
 export function ArticleView({ article, onBack }: ArticleViewProps) {
-  const { getArticleContentBySlug } = useFeedStore()
-  const articleContent = getArticleContentBySlug(article.slug)
   const { settings } = useReadingSettings()
   const [showNotesSidebar, setShowNotesSidebar] = useState(false)
 
@@ -141,7 +138,7 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
               <div className="flex items-center gap-2">
                 <FaCalendar className="text-muted-foreground/70 h-3.5 w-3.5" />
                 <time className="font-medium">
-                  {new Date(article.pubDate || article.published_date).toLocaleDateString('en-US', {
+                  {new Date(article.published_date).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
@@ -150,35 +147,12 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
                   })}
                 </time>
               </div>
-
-              {article.author && (
-                <div className="flex items-center gap-2">
-                  <FaUser className="text-muted-foreground/70 h-3.5 w-3.5" />
-                  <span className="font-medium">{article.author}</span>
-                </div>
-              )}
             </div>
-
-            {article.categories && article.categories.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {article.categories.map((category: string, index: number) => (
-                  <Badge
-                    key={index}
-                    variant="secondary"
-                    className="bg-muted/50 hover:bg-muted/70 px-2.5 py-1 text-xs font-medium transition-colors"
-                  >
-                    {category}
-                  </Badge>
-                ))}
-              </div>
-            )}
           </div>
         </div>
       </header>
 
-      {/* Content Area with Notes Sidebar */}
       <div className="flex min-h-0 flex-1">
-        {/* Article Content */}
         <ScrollArea className="flex-1">
           <div className={`min-h-full transition-colors duration-300 ${getThemeClasses()}`}>
             <article
@@ -188,14 +162,14 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
               }}
             >
               <RenderHTML
-                html={articleContent?.html_text || articleContent?.plain_text || ''}
+                html={article.content.html_text || article.content.plain_text || ''}
                 fontSize={getFontSize()}
                 fontFamily={getFontFamily()}
                 lineHeight={getLineHeight()}
                 letterSpacing={getLetterSpacing()}
               />
 
-              {!articleContent?.html_text && !articleContent?.plain_text && (
+              {!article.content.html_text && !article.content.plain_text && (
                 <div className="flex items-center justify-center py-16">
                   <div className="space-y-3 text-center">
                     <div className="border-muted-foreground/20 border-t-primary mx-auto h-12 w-12 animate-spin rounded-full border-2" />
@@ -207,7 +181,6 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
           </div>
         </ScrollArea>
 
-        {/* Notes Sidebar */}
         {showNotesSidebar && (
           <div className="bg-card/50 w-80 border-l backdrop-blur">
             <div className="border-b p-4">

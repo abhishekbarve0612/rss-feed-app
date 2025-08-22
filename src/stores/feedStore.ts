@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { FeedOut, ArticleMeta, ArticleContentOut } from '@/lib/types'
+import type { FeedOut, Article, ArticleContent } from '@/lib/types'
 
 interface FeedStore {
   feedsBySlug: Record<string, FeedOut>
@@ -7,16 +7,16 @@ interface FeedStore {
   selectedFeedSlug: string | null
 
   articlesByFeedSlug: Record<string, string[]>
-  articlesBySlug: Record<string, ArticleMeta>
-  articleContentBySlug: Record<string, ArticleContentOut>
+  articlesBySlug: Record<string, Article>
+  articleContentBySlug: Record<string, ArticleContent>
   isLoading: boolean
   error: string | null
 
   setFeeds: (feeds: FeedOut[]) => void
   setSelectedFeedSlug: (slug: string | null) => void
-  setArticlesByFeedSlug: (feedSlug: string, articles: ArticleMeta[]) => void
-  setArticlesBySlug: (articles: ArticleMeta[]) => void
-  setArticleContentBySlug: (slug: string, content: ArticleContentOut) => void
+  setArticlesByFeedSlug: (feedSlug: string, articles: Article[]) => void
+  setArticlesBySlug: (articles: Article[]) => void
+  setArticleContentBySlug: (slug: string, content: ArticleContent) => void
   setLoading: (loading: boolean) => void
   setError: (error: string | null) => void
 
@@ -28,11 +28,11 @@ interface FeedStore {
   getAllFeedsBySlug: (slug: string) => FeedOut[]
   getSelectedFeed: () => FeedOut | null
   getAllFeeds: () => FeedOut[]
-  getAllArticles: () => ArticleMeta[]
-  getAllArticlesByFeedSlug: (feedSlug: string) => ArticleMeta[]
-  getArticleBySlug: (slug: string) => ArticleMeta | undefined
+  getAllArticles: () => Article[]
+  getAllArticlesByFeedSlug: (feedSlug: string) => Article[]
+  getArticleBySlug: (slug: string) => Article | undefined
   getFeedBySlug: (slug: string) => FeedOut | undefined
-  getArticleContentBySlug: (slug: string) => ArticleContentOut | undefined
+  getArticleContentBySlug: (slug: string) => ArticleContent | undefined
 }
 
 export const useFeedStore = create<FeedStore>((set, get) => ({
@@ -65,27 +65,33 @@ export const useFeedStore = create<FeedStore>((set, get) => ({
 
   setArticlesByFeedSlug: (feedSlug, articles) =>
     set((state) => {
-      const articleSlugs = articles.map(article => article.slug)
-      const newArticlesBySlug = articles.reduce((acc, article) => {
-        acc[article.slug] = article
-        return acc
-      }, {} as Record<string, ArticleMeta>)
-      
+      const articleSlugs = articles.map((article) => article.slug)
+      const newArticlesBySlug = articles.reduce(
+        (acc, article) => {
+          acc[article.slug] = article
+          return acc
+        },
+        {} as Record<string, Article>
+      )
+
       return {
         articlesByFeedSlug: { ...state.articlesByFeedSlug, [feedSlug]: articleSlugs },
-        articlesBySlug: { ...state.articlesBySlug, ...newArticlesBySlug }
+        articlesBySlug: { ...state.articlesBySlug, ...newArticlesBySlug },
       }
     }),
 
   setArticlesBySlug: (articles) =>
     set((state) => {
-      const newArticlesBySlug = articles.reduce((acc, article) => {
-        acc[article.slug] = article
-        return acc
-      }, {} as Record<string, ArticleMeta>)
-      
+      const newArticlesBySlug = articles.reduce(
+        (acc, article) => {
+          acc[article.slug] = article
+          return acc
+        },
+        {} as Record<string, Article>
+      )
+
       return {
-        articlesBySlug: { ...state.articlesBySlug, ...newArticlesBySlug }
+        articlesBySlug: { ...state.articlesBySlug, ...newArticlesBySlug },
       }
     }),
 
@@ -128,7 +134,7 @@ export const useFeedStore = create<FeedStore>((set, get) => ({
   getAllArticlesByFeedSlug: (feedSlug) => {
     const { articlesByFeedSlug, articlesBySlug } = get()
     const articleSlugs = articlesByFeedSlug[feedSlug] || []
-    return articleSlugs.map(slug => articlesBySlug[slug]).filter(Boolean)
+    return articleSlugs.map((slug) => articlesBySlug[slug]).filter(Boolean)
   },
   getArticleBySlug: (slug) => get().articlesBySlug[slug],
   getFeedBySlug: (slug) => get().feedsBySlug[slug],

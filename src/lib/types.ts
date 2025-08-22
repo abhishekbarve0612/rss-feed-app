@@ -54,27 +54,22 @@ export interface FeedOut {
   updated_at: string
 }
 
-export interface ArticleMeta {
+export interface Article {
   id: number
   title: string
-  summary?: string
   link: string
   slug: string
   published_date: string
+  summary: string
   created_at: string
   updated_at: string
-  // Additional fields for compatibility
-  pubDate?: string
-  author?: string
-  categories?: string[]
-  content?: string
-  description?: string
 }
 
-// Keep FeedEntryOut as alias for backward compatibility
-export type FeedEntryOut = ArticleMeta
+export interface ArticleWithContent extends Article {
+  content: ArticleContent
+}
 
-export interface ArticleContentOut {
+export interface ArticleContent {
   id: number
   article_id: number
   plain_text: string

@@ -1,10 +1,10 @@
 import { Button, Card } from '@abhishekbarve/components'
-import type { ArticleMeta } from '@/lib/types'
+import type { Article } from '@/lib/types'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import { Link } from '@tanstack/react-router'
 
 interface ArticleCardProps {
-  article: ArticleMeta
+  article: Article
   minimal?: boolean
   feedSlug: string
 }

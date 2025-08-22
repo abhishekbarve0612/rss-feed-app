@@ -1,5 +1,5 @@
 import { ArticlesList } from '@/components/ArticlesList'
-import { useFeedEntries } from '@/hooks/useRSSFeed'
+import { useFeedArticles } from '@/hooks/useRSSFeed'
 import { useFeedStore } from '@/stores/feedStore'
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect } from 'react'
@@ -23,7 +23,7 @@ function RouteComponent() {
 
 function FeedEntries() {
   const { slug } = Route.useLoaderData()
-  const { data: entries, isLoading, error } = useFeedEntries(slug)
+  const { data: entries, isLoading, error } = useFeedArticles(slug)
   const { setArticlesByFeedSlug, setLoading, setError, setSelectedFeedSlug } = useFeedStore()
 
   useEffect(() => {

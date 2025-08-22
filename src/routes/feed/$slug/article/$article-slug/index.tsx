@@ -10,17 +10,15 @@ export const Route = createFileRoute('/feed/$slug/article/$article-slug/')({
 
 function RouteComponent() {
   const { slug, 'article-slug': articleSlug } = Route.useParams()
-  const { getArticleBySlug, setArticleContentBySlug } = useFeedStore()
-  const { data: articleContent, isLoading, error } = useArticleContent(slug, articleSlug)
+  const { setArticleContentBySlug } = useFeedStore()
+  const { data: article, isLoading, error } = useArticleContent(slug, articleSlug)
   const navigate = useNavigate()
 
-  const article = getArticleBySlug(articleSlug)
-
   useEffect(() => {
-    if (articleContent) {
-      setArticleContentBySlug(articleSlug, articleContent)
+    if (article) {
+      setArticleContentBySlug(articleSlug, article.content)
     }
-  }, [articleContent, articleSlug, setArticleContentBySlug])
+  }, [article, articleSlug, setArticleContentBySlug])
 
   if (!article) {
     return (
