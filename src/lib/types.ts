@@ -1,3 +1,4 @@
+export type Theme = 'light' | 'dark' | 'sepia'
 export interface RSSItem {
   id: string
   title: string
@@ -36,10 +37,10 @@ export interface Highlight {
 }
 
 export interface ReadingSettings {
-  fontSize: 'small' | 'medium' | 'large' | 'extra-large' | number
+  fontSize: number
   fontFamily: 'serif' | 'sans' | 'mono' | string
-  lineHeight: number | 'tight' | 'normal' | 'relaxed' | 'loose'
-  letterSpacing: 'extra-tight' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest' | number
+  lineHeight: number
+  letterSpacing: number
   maxWidth: number
   theme: 'light' | 'dark' | 'sepia'
 }

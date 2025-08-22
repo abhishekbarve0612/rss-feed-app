@@ -2,32 +2,22 @@
 
 import { Button, Modal, Label, RangeInput, Select } from '@abhishekbarve/components'
 import { FaRotateLeft } from 'react-icons/fa6'
-import type { ReadingSettings } from '@/lib/types'
+import {
+  FONT_SIZES,
+  LETTER_SPACING,
+  LINE_HEIGHTS,
+  FONT_OPTIONS,
+  THEME_OPTIONS,
+} from '@/lib/constants'
+import { useStore } from '@/stores/store'
+import type { Theme } from '@/lib/types'
 
-interface SettingsDialogProps {
-  settings: ReadingSettings
-  onUpdateSettings: (settings: Partial<ReadingSettings>) => void
-  onResetSettings: () => void
-}
+export const SETTINGS_MODAL_ID = 'settings-modal'
 
-const FONT_OPTIONS = [
-  { value: 'system', label: 'System Default' },
-  { value: 'serif', label: 'Serif (Times)' },
-  { value: 'sans', label: 'Sans Serif (Arial)' },
-  { value: 'mono', label: 'Monospace' },
-]
-
-type Theme = 'light' | 'dark' | 'sepia'
-
-const THEME_OPTIONS = [
-  { value: 'light', label: 'Light' },
-  { value: 'dark', label: 'Dark' },
-  { value: 'sepia', label: 'Sepia' },
-]
-
-function SettingsModal({ settings, onUpdateSettings, onResetSettings }: SettingsDialogProps) {
+function SettingsModal() {
+  const { settings, onUpdateSettings, onResetSettings } = useStore()
   return (
-    <Modal id="settings-modal" centered={false}>
+    <Modal id={SETTINGS_MODAL_ID} centered={false}>
       <Modal.Header>Reading Settings</Modal.Header>
       <Modal.Body className="sm:max-w-[500px]">
         <p>Customize your reading experience with font, spacing, and theme options.</p>
@@ -58,6 +48,40 @@ function SettingsModal({ settings, onUpdateSettings, onResetSettings }: Settings
 
             <div className="space-y-2">
               <Label htmlFor="font-size">Font Size: {settings.fontSize}px</Label>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ fontSize: FONT_SIZES.small })}
+                  active={settings.fontSize === FONT_SIZES.small}
+                >
+                  Small
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ fontSize: FONT_SIZES.medium })}
+                  active={settings.fontSize === FONT_SIZES.medium}
+                >
+                  Medium
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ fontSize: FONT_SIZES.large })}
+                  active={settings.fontSize === FONT_SIZES.large}
+                >
+                  Large
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ fontSize: FONT_SIZES.extraLarge })}
+                  active={settings.fontSize === FONT_SIZES.extraLarge}
+                >
+                  Extra Large
+                </Button>
+              </div>
               <RangeInput
                 id="font-size"
                 min={12}
@@ -71,6 +95,40 @@ function SettingsModal({ settings, onUpdateSettings, onResetSettings }: Settings
 
             <div className="space-y-2">
               <Label htmlFor="line-height">Line Height: {settings.lineHeight}</Label>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ lineHeight: LINE_HEIGHTS.tight })}
+                  active={settings.lineHeight === LINE_HEIGHTS.tight}
+                >
+                  Tight
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ lineHeight: LINE_HEIGHTS.normal })}
+                  active={settings.lineHeight === LINE_HEIGHTS.normal}
+                >
+                  Normal
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ lineHeight: LINE_HEIGHTS.relaxed })}
+                  active={settings.lineHeight === LINE_HEIGHTS.relaxed}
+                >
+                  Relaxed
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ lineHeight: LINE_HEIGHTS.loose })}
+                  active={settings.lineHeight === LINE_HEIGHTS.loose}
+                >
+                  Loose
+                </Button>
+              </div>
               <RangeInput
                 id="line-height"
                 min={1.2}
@@ -78,6 +136,69 @@ function SettingsModal({ settings, onUpdateSettings, onResetSettings }: Settings
                 step={0.1}
                 value={settings.lineHeight}
                 onChange={(e) => onUpdateSettings({ lineHeight: parseFloat(e.target.value) })}
+                className="w-full"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="letter-spacing">Letter Spacing: {settings.letterSpacing}</Label>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ letterSpacing: LETTER_SPACING.extraTight })}
+                  active={settings.letterSpacing === LETTER_SPACING.extraTight}
+                >
+                  Tight
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ letterSpacing: LETTER_SPACING.tight })}
+                  active={settings.letterSpacing === LETTER_SPACING.tight}
+                >
+                  Normal
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ letterSpacing: LETTER_SPACING.normal })}
+                  active={settings.letterSpacing === LETTER_SPACING.normal}
+                >
+                  Relaxed
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ letterSpacing: LETTER_SPACING.wide })}
+                  active={settings.letterSpacing === LETTER_SPACING.wide}
+                >
+                  Wide
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ letterSpacing: LETTER_SPACING.wider })}
+                  active={settings.letterSpacing === LETTER_SPACING.wider}
+                >
+                  Wider
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onUpdateSettings({ letterSpacing: LETTER_SPACING.widest })}
+                  active={settings.letterSpacing === LETTER_SPACING.widest}
+                >
+                  Widest
+                </Button>
+              </div>
+              <RangeInput
+                id="letter-spacing"
+                min={0.05}
+                max={0.5}
+                step={0.05}
+                value={settings.letterSpacing}
+                onChange={(e) => onUpdateSettings({ letterSpacing: parseFloat(e.target.value) })}
                 className="w-full"
               />
             </div>

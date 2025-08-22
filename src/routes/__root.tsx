@@ -11,14 +11,14 @@ import {
   ModalProvider,
 } from '@abhishekbarve/components'
 import { FaPlus } from 'react-icons/fa6'
-import { FaCog } from 'react-icons/fa'
 import { IoMenu } from 'react-icons/io5'
 import { Toaster } from '@/lib/toast'
-import AddFeedModal from '@/components/AddFeedModal'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import FeedsBar from '@/components/FeedsBar'
 import { useStore } from '@/stores/store'
 import RefreshFeedButton from '@/components/RefreshFeedButton'
+import SettingsButton from '@/components/SettingsButton'
+import AllModals from '@/components/AllModals'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -52,10 +52,7 @@ function RootComponent() {
                         </Button>
                       </Navbar.Item>
                       <Navbar.Item>
-                        <Button variant="ghost" size="sm" id="settings-button" asChild>
-                          <FaCog />
-                          Settings
-                        </Button>
+                        <SettingsButton />
                       </Navbar.Item>
                     </Navbar.Group>
                     <Navbar.Group>
@@ -78,7 +75,7 @@ function RootComponent() {
               </div>
             </div>
 
-            <AddFeedModal />
+            <AllModals />
 
             <Toaster position="bottom-right" richColors />
             <TanStackRouterDevtools />
