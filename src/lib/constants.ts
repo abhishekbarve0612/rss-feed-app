@@ -36,51 +36,41 @@ export const THEME_OPTIONS: { value: Theme; label: string }[] = [
   { value: 'sepia', label: 'Sepia' },
 ]
 
-export const getFontSizeClass = (fontSize: number) => {
+export const getFontSizeValue = (fontSize: number) => {
   switch (fontSize) {
     case FONT_SIZES.small:
-      return 'text-sm'
+      return '0.75rem'
     case FONT_SIZES.medium:
-      return 'text-base'
+      return '1rem'
     case FONT_SIZES.large:
-      return 'text-lg'
+      return '1.25rem'
     case FONT_SIZES.extraLarge:
-      return 'text-xl'
+      return '1.5rem'
     default:
-      return `text-[${fontSize}px]`
+      return `${fontSize}px`
   }
 }
 
-export const getLineHeightClass = (lineHeight: number) => {
-  switch (lineHeight) {
-    case LINE_HEIGHTS.tight:
-      return 'leading-[1.25]'
-    case LINE_HEIGHTS.normal:
-      return 'leading-[1.5]'
-    case LINE_HEIGHTS.relaxed:
-      return 'leading-[1.75]'
-    case LINE_HEIGHTS.loose:
-      return 'leading-[2]'
-    default:
-      return `leading-[${lineHeight}px]`
-  }
+export const getLineHeightValue = (lineHeight: number) => {
+  return lineHeight.toString()
 }
 
-export const getLetterSpacingClass = (letterSpacing: number) => {
-  switch (letterSpacing) {
-    case LETTER_SPACING.extraTight:
-      return 'tracking-tighter'
-    case LETTER_SPACING.tight:
-      return 'tracking-tight'
-    case LETTER_SPACING.normal:
-      return 'tracking-normal'
-    case LETTER_SPACING.wide:
-      return 'tracking-wide'
-    case LETTER_SPACING.wider:
-      return 'tracking-wider'
-    case LETTER_SPACING.widest:
-      return 'tracking-widest'
+export const getLetterSpacingValue = (letterSpacing: number) => {
+  return `${letterSpacing}rem`
+}
+
+export const getFontFamilyValue = (fontFamily: string) => {
+  console.log('fontFamily', fontFamily)
+  switch (fontFamily) {
+    case 'system':
+      return 'ui-sans-serif, system-ui, sans-serif'
+    case 'serif':
+      return 'ui-serif, Georgia, serif'
+    case 'sans':
+      return 'ui-sans-serif, system-ui, sans-serif'
+    case 'mono':
+      return 'ui-monospace, monospace'
     default:
-      return `tracking-[${letterSpacing}px]`
+      return 'ui-sans-serif, system-ui, sans-serif'
   }
 }

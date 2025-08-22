@@ -1,23 +1,19 @@
 import dompurify from 'dompurify'
 import { getArticleContentStyles } from '@/lib/utils'
+import { useStore } from '@/stores/store'
+import {
+  getFontFamilyValue,
+  getFontSizeValue,
+  getLetterSpacingValue,
+  getLineHeightValue,
+} from '@/lib/constants'
 
 interface RenderHTMLProps {
   html: string
   className?: string
-  fontSize: string
-  fontFamily: string
-  lineHeight?: string
-  letterSpacing?: string
 }
 
-function RenderHTML({
-  html,
-  className = '',
-  fontSize,
-  fontFamily,
-  lineHeight,
-  letterSpacing,
-}: RenderHTMLProps) {
+function RenderHTML({ html, className = '' }: RenderHTMLProps) {
   const sanitizedHtml = dompurify.sanitize(html, {
     ALLOWED_TAGS: [
       'p',
@@ -80,9 +76,27 @@ function RenderHTML({
     ],
   })
 
+  const { settings } = useStore()
+
+  const { fontSize, fontFamily, lineHeight, letterSpacing } = settings
+
+  console.log(fontSize, fontFamily, lineHeight, letterSpacing)
+
+  const baseStyles = getArticleContentStyles(fontSize, fontFamily, lineHeight, letterSpacing)
+
   return (
     <div
-      className={`${getArticleContentStyles(fontSize, fontFamily, lineHeight, letterSpacing)} ${className}`}
+      className={`article-content ${className}`}
+      style={
+        {
+          ...baseStyles,
+          '--heading-color': 'var(--foreground)',
+          '--link-color': 'var(--primary)',
+          '--muted-color': 'var(--muted-foreground)',
+          '--border-color': 'var(--border)',
+          '--code-bg': 'var(--muted)',
+        } as React.CSSProperties
+      }
       dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
     />
   )

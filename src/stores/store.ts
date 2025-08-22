@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
 import type { ReadingSettings } from '@/lib/types'
 
 const initialSettings: ReadingSettings = {
@@ -18,13 +19,17 @@ interface Store {
   onResetSettings: () => void
 }
 
-export const useStore = create<Store>((set) => ({
-  sidebarOpen: false,
-  setSidebarOpen: (open) => set({ sidebarOpen: open }),
-  settings: initialSettings,
-  onUpdateSettings: (settings) =>
-    set((state) => ({
-      settings: { ...state.settings, ...settings },
-    })),
-  onResetSettings: () => set({ settings: initialSettings }),
-}))
+export const useStore = create<Store>()(
+  devtools((set) => ({
+    sidebarOpen: false,
+    setSidebarOpen: (open) => set({ sidebarOpen: open }),
+    settings: initialSettings,
+    onUpdateSettings: (settings) => {
+      console.log('logging settings', settings)
+      set((state) => ({
+        settings: { ...state.settings, ...settings },
+      }))
+    },
+    onResetSettings: () => set({ settings: initialSettings }),
+  }))
+)

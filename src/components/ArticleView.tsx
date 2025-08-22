@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import { Button, ScrollArea } from '@abhishekbarve/components'
 import { FaExternalLinkAlt, FaCalendar, FaStickyNote } from 'react-icons/fa'
-import useReadingSettings from '@/hooks/useReadingSettings'
 import type { ArticleWithContent } from '@/lib/types'
 import { FaArrowLeft } from 'react-icons/fa6'
 import RenderHTML from './RenderHTML'
-import { getFontSizeClass, getLetterSpacingClass, getLineHeightClass } from '@/lib/constants'
-
+import { useStore } from '@/stores/store'
 interface ArticleViewProps {
   article: ArticleWithContent
   isLoading: boolean
@@ -15,7 +13,7 @@ interface ArticleViewProps {
 }
 
 export function ArticleView({ article, onBack }: ArticleViewProps) {
-  const { settings } = useReadingSettings()
+  const { settings } = useStore()
   const [showNotesSidebar, setShowNotesSidebar] = useState(false)
 
   const getThemeClasses = () => {
@@ -29,35 +27,10 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
     }
   }
 
-  const getFontFamily = () => {
-    switch (settings.fontFamily) {
-      case 'serif':
-        return 'font-serif'
-      case 'sans':
-        return 'font-sans'
-      case 'mono':
-        return 'font-mono'
-      default:
-        return 'font-sans'
-    }
-  }
-
-  const getFontSize = () => {
-    return getFontSizeClass(settings.fontSize)
-  }
-
-  const getLineHeight = () => {
-    return getLineHeightClass(settings.lineHeight)
-  }
-
-  const getLetterSpacing = () => {
-    return getLetterSpacingClass(settings.letterSpacing)
-  }
-
   return (
     <div className="bg-background flex min-h-0 flex-1 flex-col">
       {/* Article Header */}
-      <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10 border-b px-4 py-4 shadow-sm backdrop-blur sm:px-6 lg:px-8">
+      <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 top-0 z-10 border-b px-4 py-4 shadow-sm backdrop-blur sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <div className="mb-4 flex items-center justify-between">
             <Button
@@ -123,13 +96,7 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
                 maxWidth: `${settings.maxWidth}px`,
               }}
             >
-              <RenderHTML
-                html={article.content.html_text || article.content.plain_text || ''}
-                fontSize={getFontSize()}
-                fontFamily={getFontFamily()}
-                lineHeight={getLineHeight()}
-                letterSpacing={getLetterSpacing()}
-              />
+              <RenderHTML html={article.content.html_text || article.content.plain_text || ''} />
 
               {!article.content.html_text && !article.content.plain_text && (
                 <div className="flex min-h-[400px] items-center justify-center">

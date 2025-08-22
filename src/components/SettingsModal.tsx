@@ -84,8 +84,8 @@ function SettingsModal() {
               </div>
               <RangeInput
                 id="font-size"
-                min={12}
-                max={24}
+                min={8}
+                max={64}
                 step={1}
                 value={settings.fontSize}
                 onChange={(e) => onUpdateSettings({ fontSize: parseFloat(e.target.value) })}
@@ -285,9 +285,6 @@ function SettingsModal() {
             <FaRotateLeft className="mr-2 h-4 w-4" />
             Reset to Defaults
           </Button>
-          <Modal.CloseButton>
-            <Button>Done</Button>
-          </Modal.CloseButton>
         </Modal.Footer>
       </Modal.Body>
     </Modal>
