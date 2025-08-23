@@ -1,0 +1,9 @@
+{
+    "rewrites": [
+      {
+        "source": "/api/(.*)",
+        "destination": "https://rss-feed-app-ggrn.onrender.com/$1"
+      }
+    ]
+  }
+  
