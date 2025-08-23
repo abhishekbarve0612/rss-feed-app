@@ -41,16 +41,22 @@ function AddFeedModal() {
 
   return (
     <Modal id={MODAL_ID}>
-      <Modal.Header>
-        <h2>Add RSS Feed</h2>
-        <p>Enter the URL of an RSS or Atom feed to add it to your reader.</p>
+      <Modal.Header className="border-b border-gray-200 dark:border-gray-700">
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Add RSS Feed</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Enter the URL of an RSS feed to add it to your reader
+          </p>
+        </div>
       </Modal.Header>
-      <Modal.Body className="sm:max-w-[425px]">
+      <Modal.Body className="p-6 sm:max-w-[500px]">
         <Form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
+          <div className="space-y-6">
+            <div className="space-y-2">
               <Input>
-                <Input.Label>Feed URL *</Input.Label>
+                <Input.Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Feed URL
+                </Input.Label>
                 <Input.Field
                   name="url"
                   type="url"
@@ -63,7 +69,7 @@ function AddFeedModal() {
             </div>
           </div>
 
-          <Modal.Footer>
+          <Modal.Footer className="mt-6 flex justify-end gap-3 border-t border-gray-200 pt-6 dark:border-gray-700">
             <Button
               type="button"
               variant="outline"
