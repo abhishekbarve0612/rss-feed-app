@@ -10,7 +10,7 @@ interface FeedListProps {
 export function FeedList({ minimal = false, slug }: FeedListProps) {
   const { getAllFeeds, getAllFeedsBySlug, isLoading, error } = useFeedStore()
   const feeds = slug ? getAllFeedsBySlug(slug) : getAllFeeds()
-  console.log('feeds', feeds)
+
   if (isLoading && feeds.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center">

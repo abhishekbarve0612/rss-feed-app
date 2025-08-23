@@ -3,15 +3,17 @@ import { useState } from 'react'
 
 import toast from '@/lib/toast'
 import { Button, Modal, Input, Form, useModalManager } from '@abhishekbarve/components'
+import { useAddFeed } from '@/hooks/useRSSFeed'
+import { useFeedStore } from '@/stores/feedStore'
 
 const MODAL_ID = 'add-feed-modal'
 
 function AddFeedModal() {
   const [url, setUrl] = useState('')
-  const [title, setTitle] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { closeModal } = useModalManager()
+  const { mutate: addFeed, isPending: isSubmitting } = useAddFeed()
+  const { addFeed: addFeedToStore } = useFeedStore()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,19 +23,20 @@ function AddFeedModal() {
       return
     }
 
-    setIsSubmitting(true)
-
-    try {
-      // await addFeed(url.trim(), title.trim() || undefined)
-      toast.success('RSS feed added successfully')
-      setUrl('')
-      setTitle('')
-      closeModal(MODAL_ID)
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to add RSS feed')
-    } finally {
-      setIsSubmitting(false)
-    }
+    addFeed(
+      { url: url.trim() },
+      {
+        onSuccess: (newFeed) => {
+          addFeedToStore(newFeed)
+          toast.success('RSS feed added successfully')
+          setUrl('')
+          closeModal(MODAL_ID)
+        },
+        onError: (error) => {
+          toast.error(error instanceof Error ? error.message : 'Failed to add RSS feed')
+        },
+      }
+    )
   }
 
   return (
@@ -55,18 +58,6 @@ function AddFeedModal() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   required
-                />
-              </Input>
-            </div>
-            <div className="grid gap-2">
-              <Input>
-                <Input.Label>Custom Title (optional)</Input.Label>
-                <Input.Field
-                  name="title"
-                  type="text"
-                  placeholder="Leave empty to use feed title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
                 />
               </Input>
             </div>

@@ -10,7 +10,6 @@ import {
   ThemeProvider,
   ModalProvider,
 } from '@abhishekbarve/components'
-import { FaPlus } from 'react-icons/fa6'
 import { IoMenu } from 'react-icons/io5'
 import { Toaster } from '@/lib/toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -19,6 +18,7 @@ import { useStore } from '@/stores/store'
 import RefreshFeedButton from '@/components/RefreshFeedButton'
 import SettingsButton from '@/components/SettingsButton'
 import AllModals from '@/components/AllModals'
+import AddFeedButton from '@/components/AddFeedButton'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -46,10 +46,7 @@ function RootComponent() {
                         <RefreshFeedButton />
                       </Navbar.Item>
                       <Navbar.Item>
-                        <Button variant="ghost" size="sm" id="add-feed-button" asChild>
-                          <FaPlus />
-                          Add Feed
-                        </Button>
+                        <AddFeedButton />
                       </Navbar.Item>
                       <Navbar.Item>
                         <SettingsButton />

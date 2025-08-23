@@ -12,14 +12,17 @@ function RefreshFeedButton() {
   const handleRefresh = () => {
     console.log('selectedFeedSlug', selectedFeedSlug)
     if (selectedFeedSlug) {
-      refreshFeed(undefined, {
-        onSuccess: () => {
-          toast.success('Feed refreshed successfully!')
-        },
-        onError: () => {
-          toast.error('Failed to refresh feed')
-        },
-      })
+      refreshFeed(
+        { slug: selectedFeedSlug },
+        {
+          onSuccess: () => {
+            toast.success('Feed refreshed successfully!')
+          },
+          onError: () => {
+            toast.error('Failed to refresh feed')
+          },
+        }
+      )
     } else {
       refreshAllFeeds(undefined, {
         onSuccess: () => {

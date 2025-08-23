@@ -1,14 +1,31 @@
 import { Loader, ScrollArea, Sidebar } from '@abhishekbarve/components'
 import { FaGlobe } from 'react-icons/fa'
 import { useStore } from '@/stores/store'
-import { useFeedStore } from '@/stores/feedStore'
 import { FeedList } from './FeedsList'
+import { useFeeds } from '@/hooks/useRSSFeed'
+import { useEffect } from 'react'
+import { useFeedStore } from '@/stores/feedStore'
 
 function FeedsBar() {
   const { sidebarOpen, setSidebarOpen } = useStore()
-  const { getAllFeeds, isLoading } = useFeedStore()
-  const feeds = getAllFeeds()
-  if (isLoading && feeds.length === 0) {
+  const { data: feeds, isLoading, error } = useFeeds()
+  const { setFeeds, setLoading, setError } = useFeedStore()
+
+  useEffect(() => {
+    if (feeds) {
+      console.log('Feeds received from API:', feeds)
+      setFeeds(feeds)
+    }
+  }, [feeds, setFeeds])
+
+  useEffect(() => {
+    setLoading(isLoading)
+  }, [isLoading, setLoading])
+
+  useEffect(() => {
+    setError(error?.message || null)
+  }, [error, setError])
+  if (isLoading && !feeds) {
     return <Loader />
   }
   return (
@@ -16,7 +33,7 @@ function FeedsBar() {
       <Sidebar.Header>Feeds</Sidebar.Header>
       <ScrollArea>
         <Sidebar.Body>
-          {feeds.length > 0 ? (
+          {feeds && feeds.length > 0 ? (
             <FeedList minimal />
           ) : (
             <div className="text-muted-foreground py-8 text-center">

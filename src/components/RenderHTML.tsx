@@ -1,12 +1,6 @@
 import dompurify from 'dompurify'
 import { getArticleContentStyles } from '@/lib/utils'
 import { useStore } from '@/stores/store'
-import {
-  getFontFamilyValue,
-  getFontSizeValue,
-  getLetterSpacingValue,
-  getLineHeightValue,
-} from '@/lib/constants'
 
 interface RenderHTMLProps {
   html: string

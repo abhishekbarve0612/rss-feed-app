@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, ScrollArea } from '@abhishekbarve/components'
-import { FaExternalLinkAlt, FaCalendar, FaStickyNote } from 'react-icons/fa'
+import { FaExternalLinkAlt, FaCalendar } from 'react-icons/fa'
 import type { ArticleWithContent } from '@/lib/types'
 import { FaArrowLeft } from 'react-icons/fa6'
 import RenderHTML from './RenderHTML'
@@ -14,7 +14,7 @@ interface ArticleViewProps {
 
 export function ArticleView({ article, onBack }: ArticleViewProps) {
   const { settings } = useStore()
-  const [showNotesSidebar, setShowNotesSidebar] = useState(false)
+  const [showNotesSidebar] = useState(false)
 
   const getThemeClasses = () => {
     switch (settings.theme) {
@@ -54,7 +54,7 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
                   Open Original
                 </a>
               </Button>
-              <Button
+              {/* <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setShowNotesSidebar(!showNotesSidebar)}
@@ -62,7 +62,7 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
               >
                 <FaStickyNote className="h-3.5 w-3.5" />
                 Notes
-              </Button>
+              </Button> */}
             </div>
           </div>
 
