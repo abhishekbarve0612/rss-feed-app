@@ -11,15 +11,15 @@ from app.jobs.scheduler import start_scheduler
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    scheduler = start_scheduler()
-    print("Scheduler started")
+    # scheduler = start_scheduler()
+    # print("Scheduler started")
 
     Base.metadata.create_all(bind=engine)
 
     yield
 
-    scheduler.shutdown()
-    print("Scheduler stopped")
+    # scheduler.shutdown()
+    # print("Scheduler stopped")
 
 app = FastAPI(title="RSS Reader Backend", lifespan=lifespan)
 
